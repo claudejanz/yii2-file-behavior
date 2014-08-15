@@ -2,7 +2,7 @@
 	"name": "claudejanz/yii2-file-behavior",
 	"description": "Adds file behavior to Active Records",
 	"type": "yii2-extension",
-	"keywords": ["yii2","extension"],
+	"keywords": ["yii2","extension","Behavior","UploadedFile"],
 	"license": "GPL-3.0+",
 	"authors": [
 		{

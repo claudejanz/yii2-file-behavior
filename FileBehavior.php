@@ -82,7 +82,7 @@ class FileBehavior extends Behavior {
     public $skipOnEmpty = true;
 
     /*
-     * private vars for internal maipulation
+     * private vars for internal manipulations
      */
     private $configArray;
     private $files;
@@ -90,7 +90,7 @@ class FileBehavior extends Behavior {
     private $isActif = false;
 
     /**
-     * Register Events only if call loadWithFiles to avoid conflict with SearchModels
+     * Registers Events only if loadWithFiles is called to avoid conflict with SearchModels
      * @return array event list
      */
     public function events() {
@@ -122,7 +122,7 @@ class FileBehavior extends Behavior {
     }
 
     /**
-     * register user Events
+     * Registers Events
      */
     private function activateEvents() {
         $this->isActif = true;
@@ -130,13 +130,17 @@ class FileBehavior extends Behavior {
     }
 
     /**
-     * register unused Events
+     * Unregisters Events
      */
     private function disableEvents() {
         $this->isActif = false;
         $this->attach($model);
     }
 
+    /**
+     * Before load registers old file Names.
+     * Called from 
+     */
     public function beforeLoad() {
         /* @var $model ActiveRecord */
         $model = $this->owner;
@@ -150,6 +154,10 @@ class FileBehavior extends Behavior {
         }
     }
 
+    /**
+     * Before validate event.
+     * Gets new file instances.
+     */
     public function beforeValidate() {
 
         /* @var $model ActiveRecord */
@@ -164,10 +172,13 @@ class FileBehavior extends Behavior {
         }
     }
 
+    /**
+     * After validate event
+     * Assign old value if skipOnEmpty and new value empty
+     */
     public function afterValidate() {
         /* @var $model ActiveRecord */
         $model = $this->owner;
-        // assign old value if skipOnEmpty and new value empty
         if (!$model->isNewRecord) {
             foreach ($this->fileNameAttributes as $value) {
                 if (empty($model->{$value}) && !empty($this->oldUrls[$value]) && $this->skipOnEmpty[$value]) {
@@ -177,20 +188,29 @@ class FileBehavior extends Behavior {
         }
     }
 
+    /**
+     * After insert event
+     */
     public function afterInsert() {
         $this->afterSave();
         $this->updateDbOnInsert();
     }
 
+    /**
+     * After update event
+     */
     public function afterUpdate() {
         $this->afterSave();
     }
 
+    /**
+     * Saves files to definitive position
+     */
     public function afterSave() {
-        // last listener so we can disable event
+        // last listener has been call so we can disable event
         $this->disableEvents();
         $model = $this->owner;
-        // save files to definitive position
+       
         foreach ($this->fileNameAttributes as $value) {
             if ($this->files[$value]) {
                 $path = $this->resolvePath($this->configArray[$value][0]);

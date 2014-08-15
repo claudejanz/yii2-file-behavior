@@ -84,3 +84,11 @@ Once the extension is installed, simply use it in your code by  :
         }
     }
 ```
+
+More about configuration in [FileUploade comments](https://github.com/claudejanz/yii2-file-behavior/blob/master/FileBehavior.php)
+
+Futur developpment plan (when I need them)
+-----
+
+* Delete of old files
+* Multiple files upload for one field
