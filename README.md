@@ -52,7 +52,8 @@ Once the extension is installed, simply use it in your code by  :
                 'paths' => '@webroot/images/all/{id}/',
             ],
         ];
-    }```
+    }
+```
 
 ### In Controller
 
@@ -81,4 +82,5 @@ Once the extension is installed, simply use it in your code by  :
                         'model' => $model,
             ]);
         }
-    }```
+    }
+```
