@@ -5,10 +5,10 @@ Adds file behavior to Active Records
 Features
 -----
 
-        Upload handeled throuth behaviors
-        Rewrite url with model variables
-        After Save update url
-        skipOnEmpty support 
+* Upload handeled throuth behaviors
+* Rewrite url with model variables
+* After Save update url
+* skipOnEmpty support 
 
 Installation
 ------------
