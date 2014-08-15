@@ -7,7 +7,7 @@ Features
 
 * Upload handeled throuth behaviors
 * Rewrite url with model variables
-* After Save update url
+* After Save update model for insert support
 * skipOnEmpty support 
 
 Installation
@@ -35,7 +35,7 @@ Usage
 
 Once the extension is installed, simply use it in your code by  :
 
-In model
+### In model
 
 ```php
     public function rules() {
@@ -54,7 +54,7 @@ In model
         ];
     }```
 
-In Controller
+### In Controller
 
 ```php
     public function actionCreate() {
