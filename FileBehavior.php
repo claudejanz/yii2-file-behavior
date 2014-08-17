@@ -125,6 +125,8 @@ class FileBehavior extends Behavior {
      * Registers Events
      */
     private function activateEvents() {
+        /* @var $model ActiveRecord */
+        $model = $this->owner;
         $this->isActif = true;
         $this->attach($model);
     }
@@ -133,6 +135,8 @@ class FileBehavior extends Behavior {
      * Unregisters Events
      */
     private function disableEvents() {
+        /* @var $model ActiveRecord */
+        $model = $this->owner;
         $this->isActif = false;
         $this->attach($model);
     }
