@@ -1,5 +1,9 @@
 File Behavior
 =============
+
+[![Latest Stable Version](https://poser.pugx.org/claudejanz/yii2-file-behavior/v/stable.svg)](https://packagist.org/packages/claudejanz/yii2-file-behavior) [![Total Downloads](https://poser.pugx.org/claudejanz/yii2-file-behavior/downloads.svg)](https://packagist.org/packages/claudejanz/yii2-file-behavior) [![Latest Unstable Version](https://poser.pugx.org/claudejanz/yii2-file-behavior/v/unstable.svg)](https://packagist.org/packages/claudejanz/yii2-file-behavior) [![License](https://poser.pugx.org/claudejanz/yii2-file-behavior/license.svg)](https://packagist.org/packages/claudejanz/yii2-file-behavior)
+
+
 Adds file behavior to Active Records
 
 Features
