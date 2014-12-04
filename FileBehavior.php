@@ -149,7 +149,7 @@ class FileBehavior extends Behavior {
         /* @var $model ActiveRecord */
         $model = $this->owner;
         //make config file
-        $this->setCongig();
+        $this->setConfig();
         // keep old urls
         if (!$model->isNewRecord) {
             foreach ($this->fileNameAttributes as $value) {
@@ -185,7 +185,10 @@ class FileBehavior extends Behavior {
         $model = $this->owner;
         if (!$model->isNewRecord) {
             foreach ($this->fileNameAttributes as $value) {
-                if (empty($model->{$value}) && !empty($this->oldUrls[$value]) && $this->skipOnEmpty[$value]) {
+                if($model->{$value.'_delete'}==1 && !$this->files[$value]){
+                    $oldFilePath = Yii::getAlias(str_replace('@web', '@webroot', $this->oldUrls[$value]));
+                    if(is_file($oldFilePath))unlink($oldFilePath);
+                }elseif (empty($model->{$value}) && !empty($this->oldUrls[$value]) && $this->skipOnEmpty[$value]) {
                     $model->{$value} = $this->oldUrls[$value];
                 }
             }
@@ -255,7 +258,7 @@ class FileBehavior extends Behavior {
     /**
      * Makes initial config for file upload
      */
-    public function setCongig() {
+    public function setConfig() {
         $model = $this->owner;
         /* $this->skipOnEmpty is booleans cast as array */
         if (is_bool($this->skipOnEmpty)) {
