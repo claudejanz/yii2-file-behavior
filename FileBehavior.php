@@ -181,10 +181,13 @@ class FileBehavior extends Behavior
     {
         /* @var $model ActiveRecord */
         $model = $this->owner;
-        if(!$model->isNewRecord) {
-            foreach($this->fileNameAttributes as $value) {
-                if(empty($model->{$value}) && !empty($this->_oldUrls[$value]) && $this->skipOnEmpty[$value]) {
-                    $model->{$value} = $this->_oldUrls[$value];
+        if (!$model->isNewRecord) {
+            foreach ($this->fileNameAttributes as $value) {
+                if($model->{$value.'_delete'}==1 && !$this->files[$value]){
+                    $oldFilePath = Yii::getAlias(str_replace('@web', '@webroot', $this->oldUrls[$value]));
+                    if(is_file($oldFilePath))unlink($oldFilePath);
+                }elseif (empty($model->{$value}) && !empty($this->oldUrls[$value]) && $this->skipOnEmpty[$value]) {
+                    $model->{$value} = $this->oldUrls[$value];
                 }
             }
         }
