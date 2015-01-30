@@ -94,5 +94,4 @@ More about configuration in [FileUploade comments](https://github.com/claudejanz
 Futur developpment plan (when I need them)
 -----
 
-* Delete of old files
 * Multiple files upload for one field
