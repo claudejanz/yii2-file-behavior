@@ -77,10 +77,10 @@ class FileBehavior extends Behavior
     /*
      * Private vars for internal manipulations
      */
-    private $_configArray;
-    private $_files;
-    private $_oldUrls;
-    private $_isActive = false;
+    private $configArray;
+    private $files;
+    private $oldUrls;
+    private $isActive = false;
 
     /**
      * Register Events only if loadWithFiles is called to avoid conflict with SearchModels
@@ -88,7 +88,7 @@ class FileBehavior extends Behavior
      */
     public function events()
     {
-        return ($this->_isActive) ? [
+        return ($this->isActive) ? [
             ActiveRecord::EVENT_BEFORE_VALIDATE => 'beforeValidate',
             ActiveRecord::EVENT_AFTER_VALIDATE => 'afterValidate',
             ActiveRecord::EVENT_AFTER_INSERT => 'afterInsert',
@@ -122,7 +122,7 @@ class FileBehavior extends Behavior
     {
         /* @var $model ActiveRecord */
         $model = $this->owner;
-        $this->_isActive = true;
+        $this->isActive = true;
         $this->attach($model);
     }
 
@@ -133,7 +133,7 @@ class FileBehavior extends Behavior
     {
         /* @var $model ActiveRecord */
         $model = $this->owner;
-        $this->_isActive = false;
+        $this->isActive = false;
         $this->attach($model);
     }
 
@@ -150,7 +150,7 @@ class FileBehavior extends Behavior
         // keep old urls
         if(!$model->isNewRecord) {
             foreach($this->fileNameAttributes as $value) {
-                $this->_oldUrls[$value] = $model->{$value};
+                $this->oldUrls[$value] = $model->{$value};
             }
         }
     }
@@ -165,10 +165,10 @@ class FileBehavior extends Behavior
         $model = $this->owner;
         // get uploaded files instances
         foreach($this->fileNameAttributes as $value) {
-            $this->_files[$value] = UploadedFile::getInstance($model, $value);
-            if($this->_files[$value]) {
-                $path = $this->resolveUrl($this->_configArray[$value][0]);
-                $model->{$value} = (($this->_configArray[$value][1]) ? $path : '').$this->_files[$value]->name;
+            $this->files[$value] = UploadedFile::getInstance($model, $value);
+            if($this->files[$value]) {
+                $path = $this->resolveUrl($this->configArray[$value][0]);
+                $model->{$value} = (($this->configArray[$value][1]) ? $path : '').$this->files[$value]->name;
             }
         }
     }
@@ -220,8 +220,8 @@ class FileBehavior extends Behavior
 
         foreach($this->fileNameAttributes as $value) {
 
-            if($this->_files[$value]) {
-                $path = $this->resolvePath($this->_configArray[$value][0]);
+            if($this->files[$value]) {
+                $path = $this->resolvePath($this->configArray[$value][0]);
                 $folder = Yii::getAlias($path);
 
                 if(!is_dir($folder)) {
@@ -229,7 +229,7 @@ class FileBehavior extends Behavior
                         throw new InvalidConfigException("The directory is not writable by the Web process: {$folder}");
                     }
                 }
-                $this->_files[$value]->saveAs($folder.$this->_files[$value]->name);
+                $this->files[$value]->saveAs($folder.$this->files[$value]->name);
             }
         }
     }
@@ -305,7 +305,7 @@ class FileBehavior extends Behavior
         /**
          *  make config array
          */
-        $this->_configArray = [];
+        $this->configArray = [];
 
         foreach($this->fileNameAttributes as $value) {
             /* set foreach $this->fileNameAttributes a skipOnEmpty */
@@ -346,7 +346,7 @@ class FileBehavior extends Behavior
              * set foreach $this->fileNameAttributes a path
              * $key=>[path,returnFullPath,skipOnEmpty] 
              */
-            $this->_configArray[$value] = [
+            $this->configArray[$value] = [
                 $this->paths[$value],
                 $this->returnFullPath[$value],
                 $this->skipOnEmpty[$value]
@@ -366,9 +366,9 @@ class FileBehavior extends Behavior
         $schema = $model->getTableSchema();
         $modifications = [];
         foreach($this->fileNameAttributes as $value) {
-            if($this->_files[$value]) {
+            if($this->files[$value]) {
                 // get new value
-                $newValue = $this->resolveUrl($this->_configArray[$value][0]).$this->_files[$value]->name;
+                $newValue = $this->resolveUrl($this->configArray[$value][0]).$this->files[$value]->name;
 
                 if($model->{$value} != $newValue) {
                     // if new value set model
