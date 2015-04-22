@@ -380,7 +380,7 @@ class FileBehavior extends Behavior
                 }
             }
         }
-        if(isset($modifications)) {
+        if(!empty($modifications)) {
             // if modifications update db
             $db = $model->getDb();
             $where = '';
