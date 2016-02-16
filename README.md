@@ -13,6 +13,7 @@ Features
 * Rewrite url with model variables
 * After Save update model for insert support
 * skipOnEmpty support 
+* tabular input support
 
 Installation
 ------------

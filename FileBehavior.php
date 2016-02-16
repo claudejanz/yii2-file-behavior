@@ -77,6 +77,7 @@ class FileBehavior extends Behavior
     /*
      * Private vars for internal manipulations
      */
+    private $tabularFilePrefix;
     private $configArray;
     private $files;
     private $oldUrls;
@@ -103,10 +104,11 @@ class FileBehavior extends Behavior
      * @see Model::load()
      * @return boolean
      */
-    public function loadWithFiles($data, $formName = null)
+    public function loadWithFiles($data, $formName = null, $tabularFilePrefix = '')
     {
         /* @var $model ActiveRecord */
         $model = $this->owner;
+        $this->tabularFilePrefix = $tabularFilePrefix;
         $this->beforeLoad();
         if($model->load($data, $formName)) {
             $this->activateEvents();
@@ -165,7 +167,7 @@ class FileBehavior extends Behavior
         $model = $this->owner;
         // get uploaded files instances
         foreach($this->fileNameAttributes as $value) {
-            $this->files[$value] = UploadedFile::getInstance($model, $value);
+            $this->files[$value] = UploadedFile::getInstance($model, $this->tabularFilePrefix.$value);
             if($this->files[$value]) {
                 $path = $this->resolveUrl($this->configArray[$value][0]);
                 $model->{$value} = (($this->configArray[$value][1]) ? $path : '').$this->files[$value]->name;
